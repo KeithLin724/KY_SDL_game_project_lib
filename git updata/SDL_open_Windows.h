@@ -61,7 +61,6 @@ struct Window_data {
 	
 };
 
-
 inline int open_window(Window_data &Win_data , std::string project_name)  { // buile sdl
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
@@ -118,7 +117,3 @@ inline void clear_screan(Window_data &win_in){
 inline void Updata_screen(Window_data &win_in) {
 	SDL_RenderPresent(win_in.renderer); 
 }
-
-/*inline int Set_screen_color() {
-	SDL_SetRenderDrawColor()
-}*/

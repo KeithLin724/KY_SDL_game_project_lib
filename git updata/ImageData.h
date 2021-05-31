@@ -9,11 +9,9 @@
 
 struct ImageData {
 	SDL_Texture* texture;
-	int width;
-	int height;
+	int width, height;
 	int num;
-	int wn;
-	int hn;
+	int wn, hn;
 	int pw, ph;
 	int frame; 
 	Super_point img_p; 
@@ -24,7 +22,7 @@ struct matrix_img {
 };
 
 // ImageData loadTexture(char *path, bool ckEnable, Uint8 r, Uint8 g, Uint8 b)
-inline void LoadImgTexture(Window_data& win_in, ImageData& IMG_in, std::string path, int num, int hn, int wn, bool ckEnable, Uint8 r, Uint8 g, Uint8 b,int frame = 0,Super_point point = Super_point{0 , 0}) {
+inline void LoadImgTexture(Window_data& win_in, ImageData& IMG_in, std::string path, int num, int hn, int wn, bool ckEnable, Super_point point = Super_point{ 0 , 0 }, int frame_of_single = 0, Uint8 r = 255, Uint8 g = 255, Uint8 b = 255) {
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 
@@ -51,8 +49,8 @@ inline void LoadImgTexture(Window_data& win_in, ImageData& IMG_in, std::string p
 		IMG_in.num = num;
 		IMG_in.wn = wn;
 		IMG_in.hn = hn;
-		IMG_in.frame = frame; 
-		IMG_in.img_p = Super_point{ 0,0 }; 
+		IMG_in.frame = frame_of_single; 
+		IMG_in.img_p = point; 
 
 		// Get rid of old loaded surface
 		SDL_FreeSurface(loadedSurface);
@@ -73,17 +71,14 @@ inline int ImgRender(Window_data& win_in, ImageData& img, Super_point pos , Supe
 	src.w = img.width / img.wn;
 	src.h = img.height / img.hn;
 
-
 	if (backgrand) {
 		scale._x = (double)win_in.WIDTH / (double)src.w; // 1000 is W of window 
 		scale._y = (double)win_in.HEIGHT / (double)src.h;
 	}
 
-	if (move_mode) {
+	if (move_mode) 
 		pos = img.img_p; 
-	}
 	
-
 	dst.x = pos.x;
 	dst.y = pos.y;
 

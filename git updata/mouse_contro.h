@@ -43,15 +43,6 @@ struct Mouse {
 	
 };
 
-/*void set_image_mouse(ImageData Image_in, MouseState mouseState_in  , Mouse &mouse_in) {
-	mouse_in.BUTTON_X = Image_in.px; // button range of x 
-	mouse_in.BUTTON_Y = Image_in.py; // button range of y 
-	mouse_in.BUTTON_WIDTH = Image_in.width;
-	mouse_in.BUTTON_HEIGHT = Image_in.height;
-	mouse_in.mouseState = mouseState_in;
-	//Mouse_Event  = MouseHandleEvent;
-}*/
-
 inline void Mouse_Event(Window_data &win_in, Mouse& mouse_in)  {	
 	// about mouse data move // int* x, int* y // If mouse event happened
 	// https://wiki.libsdl.org/SDL_Event
@@ -139,93 +130,3 @@ inline void Mouse_Event(Window_data &win_in, Mouse& mouse_in)  {
 		}
 	}
 }
-
-
-
-
-
-
-
-/*inline void Mouse_Event(SDL_Event* e, Mouse& mouse_data_in, int* x, int* y) // about mouse data move // SDL_Event* e, MouseState& mouseState, int& x, int& y
-{
-	// If mouse event happened
-	// https://wiki.libsdl.org/SDL_Event
-	// https://wiki.libsdl.org/SDL_MouseMotionEvent
-	// https://wiki.libsdl.org/SDL_MouseButtonEvent
-	// https://wiki.libsdl.org/SDL_MouseWheelEvent
-	if (e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP || e->type == SDL_MOUSEWHEEL)
-	{
-		// Get mouse position
-		// https://wiki.libsdl.org/SDL_GetMouseState
-		SDL_GetMouseState(x, y);
-		//printf("(%d, %d)\n", x, y);
-
-		// Mouse is at left/right/above/below of the button. Mouse is outside the button
-		if (x < mouse_data_in.BUTTON_X || x > mouse_data_in.BUTTON_X + mouse_data_in.BUTTON_WIDTH ||
-			y < mouse_data_in.BUTTON_Y || y > mouse_data_in.BUTTON_Y + mouse_data_in.BUTTON_HEIGHT)
-		{
-			mouse_data_in.mouseState = OUT;
-		}
-		else // Mouse is inside button
-		{
-			static int lasttime = SDL_GetTicks();
-			static int curtime = SDL_GetTicks();
-			int timediv;
-
-			lasttime = curtime;
-			curtime = SDL_GetTicks();
-			timediv = curtime - lasttime;
-
-			switch (e->type)
-			{
-			case SDL_MOUSEBUTTONDOWN:
-
-				break;
-
-			case SDL_MOUSEBUTTONUP:
-
-				if (e->button.button == SDL_BUTTON_LEFT && e->button.clicks == 2 && timediv < 150)
-				{
-					mouse_data_in.mouseState = IN_LB_DC;
-				}
-				else if (e->button.button == SDL_BUTTON_RIGHT && e->button.clicks == 2 && timediv < 150)
-				{
-					mouse_data_in.mouseState = IN_RB_DC;
-				}
-				else if (e->button.button == SDL_BUTTON_LEFT && e->button.clicks == 1 && timediv < 800 && timediv > 100)
-				{
-					mouse_data_in.mouseState = IN_LB_SC;
-				}
-				else if (e->button.button == SDL_BUTTON_RIGHT && e->button.clicks == 1 && timediv < 800 && timediv > 100)
-				{
-					mouse_data_in.mouseState = IN_RB_SC;
-				}
-
-				break;
-
-			case SDL_MOUSEWHEEL:
-				if (e->wheel.y > 0) // scroll up
-				{
-					// Put code for handling "scroll up" here!
-					y = e->wheel.y;
-					mouse_data_in.mouseState = IN_WU;
-				}
-				else if (e->wheel.y < 0) // scroll down
-				{
-					// Put code for handling "scroll down" here!
-					y = e->wheel.y;
-					mouse_data_in.mouseState = IN_WD;
-				}
-				break;
-
-			case SDL_MOUSEMOTION:
-				mouse_data_in.mouseState = HOVER;
-				if (e->button.button == SDL_BUTTON_LEFT)
-				{
-					mouse_data_in.mouseState = IN_LB_PR_HOVER;
-				}
-				break;
-			}
-		}
-	}
-}*/
