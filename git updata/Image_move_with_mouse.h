@@ -2,12 +2,15 @@
 #include "SDL_open_Windows.h"
 #include "mouse_contro.h"
 #include "ImageData.h"
+#include "SDL_Game.h"
 #include <vector>
+#include <functional>
 
 struct ImgData_control {
 	Window_data* win_data; 
 	Mouse *mouse_control; 
 	ImageData *img; 
+	Game* Game_out;
 };
 
 struct multi_ImgData_control {
@@ -17,11 +20,12 @@ struct multi_ImgData_control {
 	std::vector <ImageData*> multi_img_arr; 
 };
 
-inline void ImgData_control_function(ImgData_control& Image_control , Window_data &win_in , Mouse& mouse_in, ImageData& img_in, Super_point& bef_point) {
+inline void ImgData_control_function(ImgData_control& Image_control, Window_data& win_in, Mouse& mouse_in, ImageData& img_in, Super_point& bef_point, Game_struct *Game_in = nullptr, std::function <Game(Game_struct *)> fun = nullptr) {
+	Game game_out = {};
 	if (mouse_in.mouseState == IN_LB_PR_HOVER) {
 		if ((mouse_in.point_mouse.x >= img_in.img_p.x) && (mouse_in.point_mouse.x <= img_in.img_p.x + img_in.pw + 10)
 			&& (mouse_in.point_mouse.y >= img_in.img_p.y) && (mouse_in.point_mouse.y <= img_in.img_p.y + img_in.ph + 10)) {
-			std::cout << "in captain range \n";
+			std::cout << "in " <<img_in.texture <<" range \n";
 			std::cout << bef_point.x << " " << bef_point.y << "\n";
 			if ((bef_point.x != mouse_in.point_mouse.x) || (bef_point.y != mouse_in.point_mouse.y)) {
 				std::cout << mouse_in.point_mouse.x - bef_point.x << " " << mouse_in.point_mouse.y - bef_point.y << "\n"; 
@@ -30,17 +34,23 @@ inline void ImgData_control_function(ImgData_control& Image_control , Window_dat
 			}
 		}
 		else {
-			std::cout << "out of the captain \n";
+			std::cout << "out of the " << img_in.texture << "\n"; 
 		}
 
 	}
 	else if (win_in.window_event.type == SDL_MOUSEBUTTONUP) {
-		// design
-
-
-
+		if (fun != nullptr) {
+			game_out = fun(Game_in);
+			if (game_out.up) {
+				Image_control = { &win_in, &mouse_in , &img_in , &game_out };
+			}
+		}
 	}
-	Image_control = {&win_in, &mouse_in , &img_in }; 
+	Image_control = {&win_in, &mouse_in , &img_in , &game_out }; 
+}
+
+inline Game Game_thing_out(ImgData_control& Image_control) {
+	return *(Image_control.Game_out);
 }
 
 inline int ImageData_control_draw(ImgData_control& Image_control, matrix_img scale = { 1,1 }, SDL_RendererFlip flip = SDL_FLIP_NONE , int alpha = 255 , double angle = NULL) {

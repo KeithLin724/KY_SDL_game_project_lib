@@ -10,6 +10,7 @@
 #include "mouse_contro.h"
 #include "ImageData.h"
 #include "Image_move_with_mouse.h"
+#include "SDL_Game.h"
 
 int main(int argc, char* args[]) {
 
@@ -50,7 +51,11 @@ int main(int argc, char* args[]) {
 			mouse_Bef_Point = mouse1.point_mouse; 
 			Mouse_Event(win_data, mouse1);
 		}
-		ImgData_control_function(Image_control, win_data, mouse1, img_captain, mouse_Bef_Point); 
+		ImgData_control_function(Image_control, win_data, mouse1, img_captain, mouse_Bef_Point, nullptr , print_up);
+
+		if (Game_thing_out(Image_control).up) {
+			cout << Game_thing_out(Image_control).up << "\n";
+		}
 
 		ImgData_control_function(Image_control_spman, win_data, mouse1, img_spman, mouse_Bef_Point);
 

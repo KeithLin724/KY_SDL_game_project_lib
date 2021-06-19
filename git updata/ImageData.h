@@ -55,7 +55,6 @@ inline void LoadImgTexture(Window_data& win_in, ImageData& IMG_in, std::string p
 		// Get rid of old loaded surface
 		SDL_FreeSurface(loadedSurface);
 
-		//return newTexture;
 		return; 
 	}
 }
